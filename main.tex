@@ -1,0 +1,183 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\begin{document}
+
+\tableofcontents
+
+
+\title{Dissertation Proposal Draft}
+\author{Mark Kamuda}
+\date{October 2017}
+\maketitle
+
+
+\section{Introduction}
+
+The aim of this dissertation is to demonstrate the performance of artificial neural networks (ANNs) for various tasks related to identifying and quantifying the radioisotopes in low-resolution gamma-ray spectra. The low-resolution detector of interest in this work is a 2 inch by 2 inch NaI(Tl) cylindrical scintillation detector. This detector is industry standard due to its ease of production, low cost, and acceptable resolution. Tasks of interest include unknown threat source search in a city, plutonium and uranium enrichment measurements, and fission product analysis for post-detonation nuclear explosive debris. 
+
+An ANN will learn to perform these tasks by learning from simulated datasets that represent these tasks. The aim of this work is to demonstrate that an ANN can be taught to perform different isotope identification tasks using a simulated dataset using the same general training method.
+
+
+\section{Literature Review}
+
+
+\subsection{Scintillation Detector Physics}
+
+Should I extend to general gamma-ray detector physics? how thorough should this section be?
+
+
+\subsection{Isotope Identification}
+
+\subsection{Isotope Identification Using ANNs}
+
+
+
+
+\subsection{Identification Tasks}
+
+\subsubsection{Source Search in a City}
+An unknown source search in a city is a difficult problem. The background radiation in a city fluctuates due to proximity to naturally radioactive structures (marble statues, concrete buildings) and the weather (rain increases background radiation through leeching radioactive gases from the soil as well as washing radioactive particles out of the upper atmosphere). An identification algorithm will need to be able to discriminate between these naturally occurring increases in radioactivity with true threat sources. Additionally, measurement time may be limited in the field. For example, a police officer may only have a minute to measure an area or object, and will expect a quick response from the identification instrument. To further complicate this task, NaI(Tl) spectrometers are prone to gain drift. Gain drift can occur naturally over time and when the device changes temperature. While gain drift can be corrected through frequently re-calibrating the detector, the user may not re-calibrate as often or as precisely as they should for optimum performance. This scenario requires an algorithm that can quickly and accurately identify a large number of threat isotopes in a spectrum with an unknown background, low signal-to-noise ratio (due to potential distance from source to detector), a large variance in the measured data (due to the short measurement time), and an unreliable calibration (due to user error).
+
+\subsubsection{Plutonium and Uranium Enrichment Measurements}
+
+Plutonium and uranium enrichment measurements are incredibly important for nuclear security applications. Currently, these types of analyses depend on high-resolution devices such as high-purity germanium (HPGe) semiconductor detectors. While the resolution of these detectors (0.1\%) is much better than NaI(Tl) (5-6\%).
+
+We're trying to apply a neural network to identify the isotopes in freshly enriched uranium isotopics. The first step in doing this is 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Post-Detonation Debris Analysis}
+
+
+\section{Previous Work}
+
+\subsection{Published Work}
+
+The work I published has a lot of room for improvement. Some physics in the MCNP model were neglected, like any radiation contribution from bremsstrahlung and environmental scatter. Also the background isotope spectra were very wrong. These were generated assuming a point source of radiation. Real background is distributed in the soil. Many scattering events in soil along with skyshine contribute to a spectrum that looks very different from a point source (cite MCNP background simulation paper). 
+
+There were parts of the published work that were good. The sampling method based on isotope templates is a good method to simulate lots of realistic gamma-ray spectra. One of the most difficult parts of ANN training is creating a good training set that represents reality. This method can be used to simulate most things, which is hugely useful. The results of the published work were also very promising. Despite the unrealistic physics model used in the simulation, the neural network correctly identified isotopes in a variety of simulated and real spectra. 
+
+Moving away from the MCNP model, we used GADRAS to create our template spectra. GADRAS has done all the physics heavy lifting for us, which is awesome. Also lets us simulate shielding, different scattering environments, detectors with different parameters(FWHM, gain, crystal dimensions (!)), and entirely different detectors. We have demonstrated that an ANN trained with this data can accurately identify poor quality simulated spectra. Real spectra are still needed (And likely will be included in the results section).
+
+\subsection{Fa17 Work on three datasets}
+
+Might just be shielding. This is a complicated problem. 
+
+\subsubsection{Current Proposed Method}
+
+
+The current method begins by simulating a gamma-ray spectrum dataset for a given identification and quantification task. The ANN inputs are 1024 channels of a NaI spectrum and the output is percent count contributions from each isotope in the library used. The number of input channels can be easily changed to accommodate other detectors. 
+
+\begin{enumerate}
+    \item Simulate dataset for a given ID task. 
+  
+    \item Train about 200 ANNs with randomly chosen parameters. 60 sample argument can be used or extended (or proved using this fun example! Actually yes do this for ever dataset. Yes yes yes.)
+    \subitem This is a little fuzzy, could analyze further or make more rigorous.
+    \subitem Current argument: want an ANN too large for the task, add regularization terms to reduce power of network. Let random search choose decent regularization terms. 
+    \subsubitem Could show that without regularization we overfit hardcore with super deep network (at extreme of random bounds 5 layers and 1000(?) hidden nodes). 
+    \subsubitem Could show that tiny networks will not learn the problem.
+    \subsubitem These are still slightly fuzzy evidence that my method works. Issue is I don't think things exist to actually quantify this.
+
+    \item Once the best network is found, train a new network using those parameters.
+    
+    \item Profit ???
+
+
+
+
+
+
+
+
+
+\end{enumerate}
+
+
+
+
+
+\section{Future Work}
+
+Work for this dissertation will fall into two main categories. The first will be determining how to construct the training and testing data sets. For each dataset, the specific isotopes and priors on the isotopes in each spectrum need to be determined.  The second category will be analyzing how well the ANN learned the specific task. 
+
+Giant part of future work will be collecting validation data, quantifying the limits of detection for various datasets/problems, and possibly assigning confidence values for each identification. Confidence values would be very hard for a neural network (haven't seen it done, seen some things that point to it being a hard problem). A lot of people ask about confidence though, so it's a worthwhile endeavor.  
+
+I need a more rigorous early stopping criteria. Need to look into that. Right now it works and has some justification, but it's not as pretty as I want it to be. May need to consult an expert in ECE or something.
+
+\subsection{Real Dataset Validation}
+
+\subsubsection{Source Search in a City Real Spectra Dataset}
+
+This dataset will be relatively easy to construct. Measure (in 209D) whatever button sources we have at various distances from detector (5cm, 10cm, 30cm, 50cm, 100cm, 500cm, 1m, 2m, 5m) (these distances ensure we get.
+
+\subsubsection{Plutonium and Uranium Enrichment Real Spectra Dataset}
+
+
+
+\subsubsection{Post-Detonation Debris Analysis Real Spectra Dataset}
+
+
+\subsection{Extend the same ANN method to LaBr and CsI}
+   
+    Extend the alg to CsI (D3S detectors) and LaBr. This would cause a stir in the field. Or at least get some interesting attention. 
+
+\subsection{Model Robustness Analysis}
+
+I like my models like I like my coffee. Robust.
+
+The ANN training method seems to work all-right, but the evidence for this are anecdotal. There's a better way to prove what I'm doing isn't broken.
+
+% Things indented are things I \really\ want to do slash are things that I think would be hard to argue against 
+
+\subsubsection{Prove the 60 Samples Argument}
+
+    Prove the 60 samples argument works for each dataset. IE Run 500 samples, show that from any 60 randomly chosen samples we get a final test error within x\% of the local optimum found in the 500 samples. Number of samples subject to change. Or do math to put confidence on this. This would be a \underline{GREAT} experiment.    
+
+\subsubsection{Analyze the Effect of Changing the Data Generating Distribution/Priors on ANN Performance}
+
+    Demonstrate that changing the detector parameters (effectively changing the data generating distribution slash priors) does not greatly change the ANNs performance. This can also be demonstrated by using our two NaI detectors for real spectra.
+    
+\subsubsection{Analyze the Effect of Training Set Size on ANN Performance} 
+
+
+    Change the size of the training set for each dataset and see if there's a general 'best smallest sized' training set.
+    
+    
+
+
+Show  that  without  regularization  we  overfit  hardcore  with a deep network (at extreme of random bounds 5 layers and 1000(?)hidden nodes)
+
+
+
+
+
+%\subsection{Source Search in a City}
+
+%For the task of a source search in a city, the training dataset will be created to meet the specifications under the ANSI Standard 42.34-2006 for gamma-ray RIIDs. The dataset will be composed of 29 gamma-ray producing isotopes from the ANSI standard as well as the 3 major background isotopes (background $^{40}$K and daughters from uranium and thorium). The ANSI standard contains SNM, medical sources, and other benign sources of interest. 
+
+
+\section{Conclusion}
+
+
+\end{document}
+
