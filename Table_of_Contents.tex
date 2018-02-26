@@ -1,0 +1,193 @@
+\documentclass[thesis,tocnosub,noragright,centerchapter,12pt,fullpage]{uiucecethesis09}
+
+% Use draftthesis for notes and date markings on every page.  Useful when you
+%   have multiple copies floating around.
+% Use offcenter for the extra .5 inch on the left side. Needed with fullpage and fancy.
+% Use mixcasechap for compatibility with hyperref package, which does NOT like all caps default
+% Use edeposit for the adviser/committee on the title page.
+% Use tocnosub to suppress subsection and lower entries in the TOC.
+% PhD candidates use "proquest" for the proquest abstract.
+
+\makeatletter
+
+%%%%%%%%%%%%%%%
+% MK Added to make bib work
+% \bstctlcite{IEEEexample:BSTcontrol}
+
+% MK added to highlight stuff
+\usepackage{color,soul}
+
+% MK added so figures can use the [H] option and be put where I want them.
+\usepackage{float}
+
+% MK added so algorithms work
+\usepackage{algorithm}
+
+%%%%%%%%%%%%%%%
+
+\setcounter{secnumdepth}{5} % to make subsubsections work
+\usepackage{setspace}
+\usepackage{epsfig}  % for figures
+\usepackage{graphicx}  % another package that works for figures
+\usepackage{subfigure}  % for subfigures
+\usepackage{amsmath}  % for math spacing
+\usepackage{amssymb}  % for math spacing
+%\usepackage{url}  % Hyphenation of URLs.
+\usepackage{lscape}  % Useful for wide tables or figures.
+\usepackage[justification=raggedright]{caption}	% makes captions ragged right - thanks to Bryce Lobdell
+
+
+\DeclareMathOperator*{\argminA}{arg\,min} % Jan Hlavacek
+
+% Uncomment the appropriate one of the following four lines:
+\phdthesis
+%\phdthesis
+%\otherdoctorate[abbrev]{Title of Degree}
+%\othermasters[abbrev]{Title of Degree}
+
+
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COPYRIGHT
+%
+%\copyrightpage
+%\blankpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TITLE
+%
+
+
+%\
+
+
+\tableofcontents
+
+
+
+\chapter{Introduction}
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Literature Review}
+
+
+
+\section{Isotope Identification}
+
+Automated isotope identification is difficult. 
+
+
+\section{Isotope Identification Using ANNs}
+
+
+
+
+\section{Identification Tasks}
+
+\subsection{ANSI Standard - Without shielding}
+
+Identify single isotopes and isotopes mixtures. Looking at low count time spectra, 10 seconds to an hour collection times. Source strengths range from $\mu$curie to curie source. This corresponds to orphan source strengths and SNM source strengths. 
+
+
+
+\subsection{ANSI Standard - With shielding}
+
+Shielding presents a unique problem. The signal from a shielded source is reduced, with the lower energy photopeaks being effected greater than higher energy photopeaks. 
+
+\subsubsection{Previous results}
+
+Previous work showing it can be done.
+
+\subsubsection{Validation Dataset}
+
+Collect lots of data behind various amounts of shielding with different materials. 
+
+
+\subsection{Uranium Enrichment Measurements}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Post-Detonation Debris Analysis}
+
+In theory, can we do perform post-detoation debris analysis with NaI using a neural network?  
+
+
+\chapter{Previous Work}
+
+\section{Current ANN Method}
+
+
+\section{Non-shielded ANN Results}
+
+\subsection{Thesis Results}
+
+\subsection{Published Work (Thesis extension)}
+
+
+\section{Shielded ANN Results}
+
+
+\section{Uranium ANN with Autoencoders Result}
+
+\subsection{CVT 2017 Results}
+
+
+
+
+\chapter{Future Work and Proposed Experiments}
+
+
+\section{Introduction}
+
+
+\section{ANNs to Explore}
+
+For each ANN find the theoretical best performance. Theoretical best performance is defined as the 
+
+
+
+\section{Find appropriate Hyperparameter Bounds to Prove the 60 Samples Argument}
+
+\section{On the Usefulness of Autoencoders and PCA}
+
+\subsection{Non-shielded Autoencoder with 32 isotope library - Simple Method and Calibration Drift-Perfect Spectrum}
+
+\subsection{Shielded Autoencoder - Simple Method and Shield-Perfect Spectrum}
+
+\subsection{U/Pu Autoencoder - Simple Method and Shield-Perfect Spectrum}
+
+\subsection{Post-Det Surrogate Autoencoder - Simple Method and Calibration Drift-Perfect Spectrum}
+
+
+
+\end{document}
+
