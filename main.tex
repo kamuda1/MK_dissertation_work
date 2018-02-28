@@ -59,11 +59,11 @@
 % Uncomment the \committee command for
 % - all doctoral students
 % - master's students who have a master's committee
-\committee{Professor Kathryn Huff, Adviser\\
-        Professor Rizwan Uddin\\
-        Professor Tomasz Kozlowski\\
-        Professor Clair Sullivan\\
-        Professor Mark Hasagawa-Johnson}
+\committee{Kathryn Huff, Adviser\\
+        Rizwan Uddin\\
+        Tomasz Kozlowski\\
+        Clair Sullivan\\
+        Mark Hasagawa-Johnson}
 
 
 
@@ -91,7 +91,7 @@
 \begin{abstract}
 
 
-There is a need to develop an algorithm that can identify and quantify isotopes in low-resolution gamma-ray spectra. Trained gamma-ray spectroscopists typically rely on intuition when identifying isotopes in spectra. Because they incorporate something similar to intuition, pattern recognition algorithms such as neural networks are prime candidates for automated isotope identification. Algorithms based on feature extraction such as peak finding or ROI algorithms work well for well-calibrated high resolution detectors. For low-resolution detectors, it may be more beneficial to use algorithms that incorporate more abstract features of the spectrum. To solve this, an artificial neural network (ANN) was trained to predict the presence and relative activities of isotopes from a mixture of many isotopes. The ANN is trained with simulated gamma-ray spectra, allowing easy expansion of the library of target isotopes. This proposal outlines extensions to this work including investigating new datasets and ANN structures.
+There is a need to develop an algorithm that can identify and quantify isotopes in low-resolution gamma-ray spectra. Trained gamma-ray spectroscopists typically rely on intuition when identifying isotopes in spectra. Because they incorporate something similar to the intuition used by trained spectroscopists, pattern recognition algorithms such as neural networks are prime candidates for automated isotope identification. Algorithms based on feature extraction such as peak finding or ROI algorithms work well for well-calibrated high resolution detectors. For low-resolution detectors, it may be more beneficial to use algorithms that incorporate more abstract features of the spectrum. To investigate this, an artificial neural network (ANN) was trained to predict the presence and relative activities of isotopes from gamma-ray spectra. The ANN is trained with simulated gamma-ray spectra, allowing easy expansion of the library of target isotopes. This proposal outlines extensions to this work including investigating new datasets and ANN structures.
 
 \end{abstract}
 
@@ -104,47 +104,29 @@ There is a need to develop an algorithm that can identify and quantify isotopes 
 \mainmatter
 
 
-\chapter{Introduction}
-
-The main question addressed in this work is: Can artificial neural networks (ANNs) using simulated spectra as training data automate isotope identification and quantification? Gamma-ray spectroscopists often use intuition when identifying isotopes in spectra. ANNs mimic this abstract analysis, synthesizing features of a gamma-ray spectrum in non-intuitive ways. Exploiting this intuition may overcome common hurdles encountered by other isotope identification algorithms. 
-
-% This may give ANNs the ability to identify and quantify isotopes using large isotope libraries practical for domestic nuclear security, operate using low-resolution NaI radiation detectors without knowing the detector calibration or background spectrum.
-
-% The idea to use ANNs first came as a method to exploit a potential data source in post-detonation nuclear forensics. After the device explodes, first responders will likely flood the affected area. Some of these responders will be fitted with gamma-ray spectrometers, the cheapest and most common being some size of NaI(Tl) scintillation crystals. While these crystals produce a gamma-ray spectrum with somewhat poor resolution, their potential ubiquity over heavier, more expensive systems that may require a day to cool (HPGe need liquid nitrogen temperatures to operate. This requires mechanical cooling or a dewar of liquid nitrogen. Regardless of the cooling method, they require about a day to cool if not already at operational temperature.) make them a potential source of a mountain of spectroscopic data from blast debris. This spectroscopic data can be used to identify the isotopes and their ratios in the debris. This data can be used to begin the process of attribution. Currently, the isotopics are calculated by sending debris samples to a few labs around the country (one of which is the Counting Room in the C-NR division at LANL). The debris is then chemically separated into constituent fission products, and those fission products are counted using well shielded HPGe detectors to very accurately determine isotopics. While this process will result in a more accurate measure of debris isotopics, the time necessary to transport, perform the chemical separation for each piece of debris, and measure the debris with the HPGe detectors may be on the order of days. While this may sound quick, this time will sacrifice some of the short-lived isotopes in the debris. In addition to this, if attribution time can be shortened from days to hours, international response could be organized quicker. 
-
-% Current gamma-ray spectroscopy techniques may be inadequate to be used for post-detonation debris analysis. Feature extraction techniques typically rely on fitting non-overlapping gamma-ray peaks. In post-detonation debris, many isotopes will be emitting gamma-rays, creating multiple overlapping gamma-lines. Template matching algorithms may need an excessively large library to handle this task. Each sample of debris will contain tens of isotopes in complicated combinations. These exact combinations may be hard to determine  \textit{a priori} due to differences in device design and fractionation effects. 
-
-
-
-The proposed work will demonstrate the performance of ANNs for automated gamma-ray spectroscopy in low-resolution spectra. The low-resolution detector of interest in this work is a 2-inch by 2-inch NaI(Tl) cylindrical scintillation detector. This detector is industry standard due to its ease of use, low cost, and acceptable resolution for gamma-ray spectroscopy. 
-
-The performance of each algorithm will be displayed on two different datasets. The first dataset will focus on identifying isotopes in ANSI N42-34-2006, the American national standard performance criteria for hand-held instruments for the detection and identification of radionuclides \cite{ANSI}. The second dataset will be built to perform uranium enrichment calculations.
-
-% This may give ANNs the ability to identify and quantify isotopes using large isotope libraries practical for domestic nuclear security, operate using low-resolution NaI radiation detectors without knowing the detector calibration or background spectrum.
-
-% Tasks investigated here will focus on identifying isotopes in the ANSI N42-34-2006 required list \cite{ANSI}. This ANSI standard also requires isotope identification algorithms to operate when the radioactive material is behind shielding. Accordingly, the impact of shielding will also be incorporated into this work. 
-
-In addition to isotope identification, this work will explore the ability of ANNs to quantify the count contribution from each isotope. The ANN's ability to extract count contribution information from gamma-ray spectra is important for nondestructive analysis (NDA), such as uranium enrichment calculations. Knowing the enrichment of uranium is important in two scenarios. The first scenario is when uranium is identified at a border crossing. Typically the spectrum would need to be given to a trained spectroscopist to quantify the enrichment, but this process could be automated on the device first used to identify it. The second case would be in treaty verification technologies. Low-resolution NaI gamma-ray detectors decrease the amount of possibly sensitive information while giving enough information to produce accurate enrichment quantification. The fact that ANNs can be taught to ignore certain patterns and only give information agreed upon by treaty signatories also makes them a good tool for treaty verification. The ability of ANNs to operate without knowing the shielding and background spectrum makes them better for zero knowledge scenarios. NaI detectors also have a higher efficiency than the higher resolution HPGe. This means that the counting times for NaI are smaller than would be required to get the same number of counts using an HPGe.    
-
-% The second purpose is a possible use of neural networks in post-detonation nuclear forensics. In post-detonation nuclear forensics, a large number of radioactive fission products are created. Quantifying the amount of isotopes in post-detonation debris can yield useful information about the device's properties. Mixtures of laboratory sources will be used as a surrogate for post-detonation debris and the ability for the ANN to accurately calculate the mixture components will be established.
-
-% Another case where knowing the isotope 
-
-
-
-
-
-% An ANN will learn to perform these tasks by learning from simulated datasets that represent these tasks. The aim of this work is to demonstrate that an ANN can be taught to perform different isotope identification tasks using a simulated dataset using the same general training method.
 
 
 
 
 
 
+\chapter{Introduction} \label{LiteratureReview}
+
+\section{Introduction}
+
+The main question addressed in this work is: Can artificial neural networks (ANNs) using simulated spectra as training data automate isotope identification and quantification? Gamma-ray spectroscopists often use intuition when identifying isotopes in spectra. ANNs mimic this abstract analysis, synthesizing features of a gamma-ray spectrum in non-intuitive ways. Exploiting this intuition may overcome common hurdles encountered by other isotope identification algorithms. This work will demonstrate the performance of various ANNs for automated gamma-ray spectroscopy in low-resolution spectra. The low-resolution detector of interest in this work is a 2-inch by 2-inch sodium iodide (NaI) cylindrical scintillation detector. This detector is industry standard due to its ease of use, low cost, and acceptable resolution for gamma-ray spectroscopy. 
+
+Despite it's widespread use, NaI detectors have several issues that complicate automated identification. The first issue is poor resolution compared to other more expensive radiation detection material, such as high purity germanium (HPGe). The lower-resolution makes some photopeaks unresolvable from each other, complicating identification. The second issue is calibration drift due to voltage drift in the detectors electronics or temperature changes. This calibration drift changes the locations and shapes of features in a gamma-ray spectrum, possibly confusing identification algorithms. While not specific to NaI detectors, the third issue affecting identification algorithms is background radiation from naturally occurring radioactive material (NORM). Background radiation can change both in intensity and composition based on location. This background signal can obscure features in gamma-ray spectra. Despite these drawbacks, we have demonstrated an ANN capable of identifying multiple isotopes in unknown backgrounds with a wide range of calibration settings \cite{kamudaThesis2017,kamuda2017}. Based on these preliminary results, additional experiments are planned to further explore automated spectroscopy using ANNs.
+
+Planned experiments fall into two categories: new datasets and new training methods. The first new dataset is based on the the American national standard performance criteria for hand-held instruments for the detection and identification of radionuclides, ANSI N42-34-2006 \cite{ANSI}. This dataset will incorporate the effects of shielding, unknown gain drift, and an unknown background. The second dataset will be based on zero knowledge measurements for automated uranium enrichment calculations. The performance of ANNs trained on both datasets will be assessed on a series of real and simulated gamma-ray spectra. Improvements to the dataset simulation process will also be included. Improvements include new sampling methods for dataset construction and additional detector models to increase the ANNs generalization capabilities.
+
+The new training methods include autoencoders, cross validation for the hyperparameter search, and bagging. Autoencoders will be used to separate the task of background subtraction and recalibration from identification. K-folds cross validation will be used in the hyperparameter search to more accurately determine proper hyperparameter values. Finally, bagging will be used to lower the variance output by the ANN. This lower variance will more accurately display the performance of a given ANN. 
+
+
+This document outlines the motivations, preliminary work, and future work proposed for applying ANNs to gamma-ray spectroscopy. Chapter \ref{LiteratureReview} serves as a literature review, giving background on gamma-ray spectroscopy, ANN theory, and how ANNs have been applied to gamma-ray spectroscopy in literature. This serves as motivation for Chapter \ref{ANNIQ}, which gives an overview of the preliminary work and results obtained from our work applying ANNs to gamma-ray spectroscopy. Finally, Chapter \ref{FutureWork} outlines proposed extensions and experiments to further explore ANN applications to gamma-ray spectroscopy. The results of these experiments will be used to argue for or against the future pursuit of ANNs for gamma-ray spectroscopy. 
 
 
 
-\chapter{Literature Review}
 
 
 \section{Gamma-Ray Spectroscopy for Isotope Identification}
@@ -222,8 +204,6 @@ In Equations \ref{eq:update1} and \ref{eq:update2}, $E$ is the given error funct
 
 In general, ANNs have a tendency to memorize their training set in a process called overtraining. An overtrained ANN will tend to incorrectly identify novel data. To prevent this, hyperparameters were used in the present work to prevent overfitting and optimize performance. Unfortunately, there is currently no known method to know which hyperparameters have an impact on model performance before training. Because of this, a number of popular hyperparameters are typically added to a model and a random hyperparameter search is used to identify those which are important. \iffalse Because there is no direct method to identify which hyperparameters are important or what their values should be, a random hyperparameter search can be used to find a close-to-optimal network structure and hyperparameter values.\fi There is evidence that a random search in a given hyperparameter range finds better hyperparameters quicker than a grid search in the same range \cite{Bergstra2012}. There is also a proof showing that given 60 points randomly sampled from a function with a finite minimum, the minimum of those 60 random samples will be within 5\% of the true minimum with 95\% probability \cite{Zheng2015}. Training 60 ANNs is computationally feasible, making this a good method to find a close-to-optimal ANN for a given dataset. 
 
-
-
 \section{Automated Isotope Identification Using ANNs}
 
 There have been a number of published papers which apply ANNs to automated isotope identification. ANNs have been applied to peak fitting \cite{Abdel-Aal2002}, isotope identification \cite{Abdel-Aal1996, Medhat2012}, and activity estimation \cite{Abdel-Aal1996, Vigneron1996}. Many of these works rely on ROI methods \cite{Pilato1999}, feature extraction \cite{Chen2009}, high-resolution gamma-ray spectra as the input to the ANN \cite{Yoshida2002}, small libraries of isotopes, and assume perfectly calibrated detectors. ANN training methods created for high-resolution gamma-ray spectra may not perform well when trained using low-resolution spectra. Because of the large discrepancy in resolution, the features exploited by a ANN trained on high-resolution spectra would be different than low-resolution spectra. In addition to this, ANN training that relies on ROI methods may not perform well when ROIs overlap significantly with large libraries of isotopes. Feature extraction and ROI methods may also falter when the background radiation field is unknown or the detector's calibration is unreliable.  
@@ -237,7 +217,7 @@ To overcome the issues outlined above, instead of training an ANN using predeter
 
 
 
-\chapter{Artificial Neural Network Approach to Identifying and Quantifying isotopes in Gamma-Ray Spectra}
+\chapter{Artificial Neural Network Approach to Identifying and Quantifying isotopes in Gamma-Ray Spectra} \label{ANNIQ}
 
 \section{Introduction}
 
@@ -466,7 +446,9 @@ This chapter illustrates a method to use an ANN to perform gamma-ray spectroscop
 % Table \ref{fig:enrichment_MSE_table} also shows that using the full spectrum as ANN input is superior to dimension reduction techniques. This table also shows that the ANN is best at identifying $^{235}$U. The accuracy of $^{235}$U implies that ANN is not learning calibration drift well. The 186 keV peak from $^{235}$U has no overlap, even with gain drift, with the other isotopes in the training library. This allows the ANN to accurately identify it. Conversely, $^{231}$Th and $^{234}$Th emit similar low-energy gamma-rays. These become easily confused with gain drift. This implies that gain correction and isotope identification and quantification should be handled by a separate algorithms. Suggestions for improvements for this will be explained in later sections.
 
 
-\chapter{Future Work and Proposed Experiments}
+\chapter{Future Work and Proposed Experiments} \label{FutureWork}
+
+\section{Introduction}
 
 For the proposed work, a number of experiments that will explore applying ANNs to gamma-ray spectroscopy. An outline of this work can be seen in Figure \ref{fig:ANN_workflow}. Section \ref{ProposedDatasets} details two proposed gamma-ray spectra datasets to be simulated. Motivation is given to establish that these datasets represent important problems in gamma-ray spectroscopy. In addition to ANNs that use the full spectrum as input, ANNs that are trained to perform feature extraction will also be considered. Section \ref{Autoencoders} describes how autoencoders can be trained to extract key features from a gamma-ray spectrum. Section \ref{CrossValidation} describes how the random hyperparameter search will be performed using K-folds cross validation. Once an appropriate ANN is found, a method called bagging (bootstrap aggregating) will be used to construct an ensemble of ANNs. Bagging is described in Section \ref{Bagging}. Finally, the ANN performance on each dataset will be evaluated. Performance metrics are based on the ANN error in testing datasets, described in section \ref{ProposedDatasets}.%, and ANN confidence, described in \ref{ModelConfidence}. 
 
@@ -690,11 +672,13 @@ The ANN methods explored in this section will more accurately display the perfor
 
 \chapter{Conclusion}
 
-Because of their flexibility and their ability to train using simulated data, ANNs are well suited to solving different problems in gamma-ray spectroscopy. Because ANNs incorporate fuzzy logic, they mimic the intuition a trained spectroscopist uses when identifying spectra. This is in contrast to other identification algorithms that use rigid rules which may struggle to identify spectra that are poorly calibrated, have insufficient counts to form obvious features, or are in an unknown background. 
+Because of their ability to train using simulated data and mimic the intuition and flexibility of a trained spectroscopist, ANNs are well suited to solving different problems in gamma-ray spectroscopy. This is in contrast to other identification algorithms that use rigid rules which may struggle to identify spectra that are poorly calibrated, have insufficient counts to form obvious features, or are in an unknown background. 
 
-To better understand what scenarios the ANN can operate in, two datasets will be investigated. The goal of the first dataset is to perform source interdiction using the ANSI N42-34-2006 library. The second dataset corresponds to performing uranium enrichment calculations for treaty verification purposes. %The final dataset will correspond to a source mixture problem using the ANSI N42-34-2006 library. This will be used as a surrogate for post-detonation nuclear forensics debris analysis. 
+ANN applications to automated gamma-ray spectroscopy have shown promise in past research. Our work on training ANNs to quantify and identify isotopes using simulated gamma-ray spectra has also yielded interesting results. Our ANN was demonstrated to work well for single isotope identification in simulated spectra with non-obvious spectral features. Another ANN also showed promise in distinguishing between a shielded an unshielded isotope with relatively complicated spectral features. These experiments serve to motivate future work.
 
-In addition to these datasets, a number of ANN experiments are suggested to improve on past work. The first improvement is adding additional detector models to the training set. The additional models should increase the generalization performance of the ANN. The second improvement will focus on how autoencoders can improve performance by keeping the calibration correction and background subtraction step separate from an ANN used for identification. This will include investigating the use of a 1-D convolution ANN as an autoencoder. To more accurately display the performance of a given ANN structure, k-folds cross validation will be added to the hyperparameter search for each dataset. After training, bagging  \iffalse and  model  confidence \fi will be added to the model. Bagging lowers the variance on the outputs of a given ANN structure and more accurately displays its performance.
+To better understand how well ANNs can perform tasks in gamma-ray spectroscopy, ANNs will be trained to perform different tasks on two datasets. The goal of an ANN trained using the first dataset is to perform source interdiction using the ANSI N42-34-2006 library. The second ANN will be trained to performing uranium enrichment calculations for treaty verification purposes. Quantifying the performance of an ANN trained on both of these problems would motivate the use of these models in commercial detection systems.
+
+In addition to these datasets, a number of ANN experiments are suggested to improve on our preliminary work. The first improvement is adding additional detector models to the training set. The additional models should increase the generalization performance of the ANN. The second improvement will focus on how autoencoders can improve performance by keeping the calibration correction and background subtraction step separate from an ANN used for identification. This will include investigating the use of a 1-D convolution ANN as an autoencoder. To more accurately display the performance of a given ANN structure, k-folds cross validation will be added to the hyperparameter search for each dataset. After training, bagging will be added to the model. Bagging lowers the variance on the outputs of a given ANN and more accurately displays its performance.
 
 
 
